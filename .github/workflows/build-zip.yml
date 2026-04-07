@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: OncoWithdrawal
 
       - name: Create plugin ZIP
         run: |
-          mkdir -p OncoWithdrawal
-          rsync -a --exclude='.github' --exclude='.git' . OncoWithdrawal/
+          rm -rf OncoWithdrawal/.github OncoWithdrawal/.git
           zip -r OncoWithdrawal.zip OncoWithdrawal
 
       - name: Upload artifact
