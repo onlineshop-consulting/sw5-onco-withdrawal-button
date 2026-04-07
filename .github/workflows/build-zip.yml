@@ -1,0 +1,30 @@
+name: Build Plugin ZIP
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create plugin ZIP
+        run: |
+          mkdir -p OncoWithdrawal
+          rsync -a --exclude='.github' --exclude='.git' . OncoWithdrawal/
+          zip -r OncoWithdrawal.zip OncoWithdrawal
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OncoWithdrawal
+          path: OncoWithdrawal.zip
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: OncoWithdrawal.zip

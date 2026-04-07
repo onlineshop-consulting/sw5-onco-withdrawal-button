@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware5/shopware/5.7/engine/Shopware/Components/Plugin/schema/config.xsd">
+    <elements>
+
+        <!-- Which Shopware form to use as the withdrawal form -->
+        <element scope="shop" type="select" required="true">
+            <name>form</name>
+            <label>Withdrawal form</label>
+            <label lang="de">Durch Button erreichbares Widerrufsformular</label>
+            <store><![CDATA[Ext.define('onco.Withdrawal.Forms', {
+                extend: 'Ext.data.Store',
+                fields: [
+                    { name:'id', type: 'int' },
+                    { name:'name', type: 'string' }
+                ],
+                autoLoad: true,
+                pageSize: 25,
+                proxy: {
+                    type: 'ajax',
+                    url: window.location.href.substr(0, window.location.href.indexOf('backend')) + 'backend/form/getForms',
+                    reader: {
+                        type: 'json',
+                        root: 'data',
+                        totalProperty: 'total'
+                    }
+                }
+                }).create();//new ]]>
+            </store>
+            <options>
+                <valueField>id</valueField>
+                <displayField>name</displayField>
+                <isCustomStore>true</isCustomStore>
+            </options>
+        </element>
+
+
+        <!-- Where to display global withdrawal buttons (individual checkboxes) -->
+        <element scope="shop" type="boolean">
+            <name>showInAccountMenu</name>
+            <label>Show in account menu</label>
+            <label lang="de">Button anzeigen: Im Konto-Menü</label>
+        </element>
+
+        <element scope="shop" type="boolean">
+            <name>showAfterFooterServiceMenu</name>
+            <label>Show at end of "Service" menu in footer</label>
+            <label lang="de">Button anzeigen: Footer - Ende "Service" Menü</label>
+        </element>
+
+        <element scope="shop" type="boolean">
+            <name>showAfterFooterInfoMenu</name>
+            <label>Show at end of "Information" menu in footer</label>
+            <label lang="de">Button anzeigen: Footer - Ende "Informationen" Menü</label>
+        </element>
+
+        <element scope="shop" type="boolean">
+            <name>showInFooter</name>
+            <label>Show at very bottom of footer</label>
+            <label lang="de">Button anzeigen: Footer - ganz unten</label>
+        </element>
+
+
+        <!-- Custom jQuery selector placement for the global button -->
+        <element scope="shop" type="text">
+            <name>customSelector</name>
+            <label>Custom jQuery selector</label>
+            <label lang="de">Button anzeigen: Eigener Selektor</label>
+            <description>Enter a jQuery selector (e.g. ".footer-main", "#my-element") to place the withdrawal button at a custom position on the page. Leave empty to disable.</description>
+            <description lang="de">Geben Sie einen jQuery-Selektor ein (z.B. ".footer-main", "#my-element"), um den Widerrufs-Button an einer eigenen Position zu platzieren. Leer lassen zum Deaktivieren.</description>
+        </element>
+
+        <element scope="shop" type="select">
+            <name>customSelectorPosition</name>
+            <label>Insertion method</label>
+            <label lang="de">Button anzeigen: Einfügemethode für eigenen Selektor</label>
+            <value>append</value>
+            <description>How the button is placed relative to the element matched by the jQuery selector above.</description>
+            <description lang="de">Bestimmt, wie der Button relativ zum per jQuery-Selektor gefundenen Element eingefügt wird.</description>
+            <store>
+                <option>
+                    <value>append</value>
+                    <label>Append (inside, at the end)</label>
+                    <label lang="de">Anhängen (innerhalb, am Ende)</label>
+                </option>
+                <option>
+                    <value>prepend</value>
+                    <label>Prepend (inside, at the beginning)</label>
+                    <label lang="de">Voranstellen (innerhalb, am Anfang)</label>
+                </option>
+                <option>
+                    <value>after</value>
+                    <label>After (outside, after the element)</label>
+                    <label lang="de">Danach (außerhalb, nach dem Element)</label>
+                </option>
+                <option>
+                    <value>before</value>
+                    <label>Before (outside, before the element)</label>
+                    <label lang="de">Davor (außerhalb, vor dem Element)</label>
+                </option>
+            </store>
+        </element>
+
+
+        <element scope="shop" type="boolean">
+            <name>showOrderButtons</name>
+            <label>Show buttons in order overview</label>
+            <label lang="de">Buttons in Bestellübersicht im Kundenkonto anzeigen</label>
+        </element>
+
+    </elements>
+</config>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware5/shopware/5.7/engine/Shopware/Components/Plugin/schema/plugin.xsd">
+
+    <label>Withdrawal button</label>
+    <label lang="de">Widerrufsbutton</label>
+
+    <version>1.0.0</version>
+
+    <copyright>onlineshop.consulting</copyright>
+    <author>onlineshop.consulting</author>
+    <link>https://onlineshop.consulting</link>
+
+    <description>
+        Provides an online withdrawal form and configurable withdrawal buttons throughout the storefront, in compliance with EU Directive 2023/2673.
+    </description>
+    <description lang="de">
+        Stellt ein Online-Widerrufsformular und Widerrufs-Buttons gemäß EU-Richtlinie 2023/2673 bereit.
+    </description>
+
+    <compatibility minVersion="5.7.0"/>
+
+    <changelog version="1.0.0">
+        <changes>Initial release</changes>
+        <changes lang="de">Erstveröffentlichung</changes>
+    </changelog>
+</plugin>
