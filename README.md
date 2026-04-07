@@ -18,7 +18,7 @@ Widerrufs-Button und Online-Widerrufsformular gemäß EU-Richtlinie 2023/2673.
 
 ## Konfiguration
 Die Konfiguration wird in diesem Video erklärt:
-<video src="https://onlineshop.consulting/videos/plugins/sw5/onco-withdrawal.mp4" controls width="100%"></video>
+https://onlineshop.consulting/videos/plugins/sw5/onco-withdrawal.mp4
 
 ## Kompatibilität
 
