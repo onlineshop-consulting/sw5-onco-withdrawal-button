@@ -8,7 +8,6 @@
         <!-- Handles mail copy and form prefilling for withdrawal forms -->
         <service id="onco_withdrawal.subscriber.main"
                  class="OncoWithdrawal\Subscriber\Frontend\MainSubscriber">
-            <argument type="service" id="shop"/>
             <argument type="service" id="models"/>
             <argument type="service" id="session"/>
             <argument type="service" id="modules"/>

@@ -27,18 +27,15 @@ use Shopware_Components_Modules;
 
 class MainSubscriber implements SubscriberInterface
 {
-    private Shop $shop;
     private ModelManager $modelManager;
     private Enlight_Components_Session_Namespace $session;
     private Shopware_Components_Modules $modules;
 
     public function __construct(
-        Shop                                 $shop,
         ModelManager                         $modelManager,
         Enlight_Components_Session_Namespace $session,
         Shopware_Components_Modules          $modules
     ) {
-        $this->shop = $shop;
         $this->modelManager = $modelManager;
         $this->session = $session;
         $this->modules = $modules;
