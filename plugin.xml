@@ -5,7 +5,7 @@
     <label>Withdrawal button</label>
     <label lang="de">Widerrufsbutton</label>
 
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 
     <copyright>onlineshop.consulting</copyright>
     <author>onlineshop.consulting</author>
@@ -18,7 +18,7 @@
         Stellt ein Online-Widerrufsformular und Widerrufs-Buttons gemäß EU-Richtlinie 2023/2673 bereit.
     </description>
 
-    <compatibility minVersion="5.6.0"/>
+    <compatibility minVersion="5.4.6"/>
 
     <changelog version="1.0.0">
         <changes>Initial release</changes>
@@ -27,5 +27,9 @@
     <changelog version="1.1.0">
         <changes>Compatibility Shopware 5.6+</changes>
         <changes lang="de">Kompatibilität Shopware 5.6+</changes>
+    </changelog>
+    <changelog version="1.2.0">
+        <changes>Compatibility Shopware 5.4+, better theme compatibility</changes>
+        <changes lang="de">Kompatibilität Shopware 5.4+, bessere Theme-Kompatibilität</changes>
     </changelog>
 </plugin>

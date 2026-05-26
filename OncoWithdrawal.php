@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OncoWithdrawal extends Plugin
 {
     /** Attribute column name on s_cms_support_attributes that flags withdrawal forms. */
-    public const IS_WITHDRAWAL_FORM = 'onco_withdrawal_is_withdrawal_form';
+    const IS_WITHDRAWAL_FORM = 'onco_withdrawal_is_withdrawal_form';
 
     /** @var ContainerInterface */
     protected $container;
@@ -35,7 +35,7 @@ class OncoWithdrawal extends Plugin
      *
      * @var string[]
      */
-    private const CACHE_LIST = [
+    const CACHE_LIST = [
         InstallContext::CACHE_TAG_TEMPLATE,
         InstallContext::CACHE_TAG_CONFIG,
         InstallContext::CACHE_TAG_PROXY,
@@ -47,8 +47,12 @@ class OncoWithdrawal extends Plugin
     //  Event subscriptions
     // ==================================================================
 
-    /** @inheritDoc */
-    public static function getSubscribedEvents(): array
+    /**
+     * @inheritDoc
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents()
     {
         return [
             'Enlight_Controller_Action_PostDispatch_Frontend' => 'onPostDispatch',
@@ -60,8 +64,10 @@ class OncoWithdrawal extends Plugin
     /**
      * Assign the full plugin config to Smarty so templates can use
      * {$oncoWithdrawal.config.form}, {$oncoWithdrawal.config.showInFooter}, etc.
+     *
+     * @return void
      */
-    public function onPostDispatch(Enlight_Controller_ActionEventArgs $args): void
+    public function onPostDispatch(Enlight_Controller_ActionEventArgs $args)
     {
         $view = $args->getSubject()->View();
 
@@ -84,8 +90,10 @@ class OncoWithdrawal extends Plugin
 
     /**
      * Create the withdrawal form attribute and default forms (DE + EN).
+     *
+     * @return void
      */
-    public function install(InstallContext $context): void
+    public function install(InstallContext $context)
     {
         $this->getLifeCycleService()->install();
 
@@ -94,26 +102,36 @@ class OncoWithdrawal extends Plugin
 
     /**
      * Clear caches so theme and config changes take effect immediately.
+     *
+     * @return void
      */
-    public function update(UpdateContext $context): void
+    public function update(UpdateContext $context)
     {
         $context->scheduleClearCache(self::CACHE_LIST);
     }
 
-    public function activate(ActivateContext $context): void
+    /**
+     * @return void
+     */
+    public function activate(ActivateContext $context)
     {
         $context->scheduleClearCache(self::CACHE_LIST);
     }
 
-    public function deactivate(DeactivateContext $context): void
+    /**
+     * @return void
+     */
+    public function deactivate(DeactivateContext $context)
     {
         $context->scheduleClearCache(self::CACHE_LIST);
     }
 
     /**
      * Remove forms and attribute unless the user chose to keep data.
+     *
+     * @return void
      */
-    public function uninstall(UninstallContext $context): void
+    public function uninstall(UninstallContext $context)
     {
         $this->getLifeCycleService()->uninstall($context->keepUserData());
 
@@ -131,7 +149,7 @@ class OncoWithdrawal extends Plugin
      *
      * @return array<string, mixed>
      */
-    private function readConfig($shop = null): array
+    private function readConfig($shop = null)
     {
         /** @var \Shopware\Components\Plugin\DBALConfigReader $reader */
         $reader = $this->container->get('shopware.plugin.config_reader');
@@ -147,8 +165,10 @@ class OncoWithdrawal extends Plugin
 
     /**
      * Build the LifeCycleService with the required dependencies.
+     *
+     * @return LifeCycleService
      */
-    private function getLifeCycleService(): LifeCycleService
+    private function getLifeCycleService()
     {
         return new LifeCycleService(
             $this->container->get('models'),

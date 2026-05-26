@@ -11,7 +11,6 @@
 
 namespace OncoWithdrawal\Subscriber\Frontend;
 
-use Doctrine\ORM\Exception\NotSupported;
 use Enlight\Event\SubscriberInterface;
 use Enlight_Components_Mail;
 use Enlight_Components_Session_Namespace;
@@ -22,27 +21,29 @@ use Shopware\Models\Customer\Customer;
 use Shopware\Models\Form\Form;
 use Shopware\Models\Order\Billing;
 use Shopware\Models\Order\Order;
-use Shopware\Models\Shop\Shop;
-use Shopware_Components_Modules;
 
 class MainSubscriber implements SubscriberInterface
 {
-    private ModelManager $modelManager;
-    private Enlight_Components_Session_Namespace $session;
-    private Shopware_Components_Modules $modules;
+    /** @var ModelManager */
+    private $modelManager;
+
+    /** @var Enlight_Components_Session_Namespace */
+    private $session;
 
     public function __construct(
         ModelManager                         $modelManager,
-        Enlight_Components_Session_Namespace $session,
-        Shopware_Components_Modules          $modules
+        Enlight_Components_Session_Namespace $session
     ) {
         $this->modelManager = $modelManager;
         $this->session = $session;
-        $this->modules = $modules;
     }
 
-    /** @inheritDoc */
-    public static function getSubscribedEvents(): array
+    /**
+     * @inheritDoc
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents()
     {
         return [
             'Shopware_Controllers_Frontend_Forms_commitForm_Mail' => 'onFormMailSent',
@@ -56,8 +57,10 @@ class MainSubscriber implements SubscriberInterface
 
     /**
      * Clone the shop-owner notification and send it to the customer.
+     *
+     * @return void
      */
-    public function onFormMailSent(Enlight_Event_EventArgs $args): void
+    public function onFormMailSent(Enlight_Event_EventArgs $args)
     {
         $originalMail = $args->getReturn();
         if (!$originalMail instanceof Enlight_Components_Mail) {
@@ -85,8 +88,10 @@ class MainSubscriber implements SubscriberInterface
 
     /**
      * Check whether the given form ID belongs to a withdrawal form.
+     *
+     * @return bool
      */
-    private function isWithdrawalForm($formId): bool
+    private function isWithdrawalForm($formId)
     {
         if (!$formId) {
             return false;
@@ -110,8 +115,10 @@ class MainSubscriber implements SubscriberInterface
     /**
      * If conditions are met (user logged in, orderNumber param present),
      * assign order data as JSON to the view for client-side prefilling.
+     *
+     * @return void
      */
-    public function onFormsPostDispatch(Enlight_Event_EventArgs $args): void
+    public function onFormsPostDispatch(Enlight_Event_EventArgs $args)
     {
         /** @var \Shopware_Controllers_Frontend_Forms $subject */
         $subject = $args->get('subject');
@@ -122,19 +129,31 @@ class MainSubscriber implements SubscriberInterface
         if ($request->getActionName() !== 'index') {
             return;
         }
+        //SW5.4
+        $formData = $view->getAssign('sSupport');
+        $attributes = isset($formData['attribute'])?$formData['attribute']:[];
+        if(empty($attributes)) {
+            /* @var $query \Doctrine\ORM\Query */
+            $attributesRaw = Shopware()->Models()->getRepository(\Shopware\Models\Form\Form::class)
+                ->getAttributesQuery($formData['id'])->getArrayResult();
+            if(!empty($attributesRaw[0])) {
+                $formData['attribute'] = $attributesRaw[0];
+                $view->assign('sSupport', $formData);
+            };
+        }
 
         // Require a logged-in user
         $userId = $this->session->get('sUserId');
-        if (!$userId || !$this->modules->Admin()->sCheckUser()) {
+        if (!$userId || !Shopware()->Modules()->Admin()->sCheckUser()) {
             return;
         }
 
         // Require an orderNumber query parameter
         $orderNumber = $request->getQuery('orderNumber');
+
         if (empty($orderNumber)) {
             return;
         }
-
         // Fetch data from the order
         $orderData = $this->getOrderData((string) $orderNumber, (string) $userId);
         if (empty($orderData)) {
@@ -152,9 +171,12 @@ class MainSubscriber implements SubscriberInterface
     /**
      * Load order + billing data for the given order number, scoped to the user.
      *
+     * @param string $orderNumber
+     * @param string $userId
+     *
      * @return array<string, string> Field name → value map
      */
-    private function getOrderData(string $orderNumber, string $userId): array
+    private function getOrderData($orderNumber, $userId)
     {
         try {
             /** @var Order|null $order */
@@ -167,8 +189,9 @@ class MainSubscriber implements SubscriberInterface
                 return [];
             }
 
+            $orderNumberValue = $order->getNumber();
             $data = [
-                'order_number' => $order->getNumber() ?? '',
+                'order_number' => $orderNumberValue !== null ? $orderNumberValue : '',
             ];
 
             // Add customer email

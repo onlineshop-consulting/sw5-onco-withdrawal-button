@@ -70,9 +70,14 @@ class LifeCycleService
         ],
     ];
 
-    private ModelManager $modelManager;
-    private CrudService $attributeService;
-    private Shopware_Components_Config $config;
+    /** @var ModelManager */
+    private $modelManager;
+
+    /** @var CrudService */
+    private $attributeService;
+
+    /** @var Shopware_Components_Config */
+    private $config;
 
     public function __construct(
         ModelManager $modelManager,
@@ -91,9 +96,11 @@ class LifeCycleService
     /**
      * Run all installation steps: create attribute column, then default forms.
      *
+     * @return void
+     *
      * @throws OptimisticLockException|ORMException
      */
-    public function install(): void
+    public function install()
     {
         $this->createAttribute();
         $this->createForms();
@@ -107,9 +114,13 @@ class LifeCycleService
      * Remove forms and attribute column. Skipped entirely when the user
      * chose to preserve data during uninstall.
      *
+     * @param bool $keepUserData
+     *
+     * @return void
+     *
      * @throws OptimisticLockException|ORMException
      */
-    public function uninstall(bool $keepUserData): void
+    public function uninstall($keepUserData)
     {
         if ($keepUserData) {
             return;
@@ -125,8 +136,10 @@ class LifeCycleService
     /**
      * Register a boolean attribute on the form table so we can flag
      * withdrawal forms without relying on name matching.
+     *
+     * @return void
      */
-    private function createAttribute(): void
+    private function createAttribute()
     {
         $this->attributeService->update(
             's_cms_support_attributes',
@@ -147,8 +160,10 @@ class LifeCycleService
 
     /**
      * Drop the attribute column and regenerate Doctrine models.
+     *
+     * @return void
      */
-    private function removeAttribute(): void
+    private function removeAttribute()
     {
         $this->attributeService->delete(
             's_cms_support_attributes',
@@ -167,11 +182,16 @@ class LifeCycleService
      * Create default withdrawal forms for each configured language,
      * skipping any language that already has a withdrawal form.
      *
+     * @return void
+     *
      * @throws OptimisticLockException|ORMException
      */
-    private function createForms(): void
+    private function createForms()
     {
-        $shopEmail = $this->config->get('mail') ?? 'EMAIL';
+        $shopEmail = $this->config->get('mail');
+        if ($shopEmail === null) {
+            $shopEmail = 'EMAIL';
+        }
 
         foreach (self::DEFAULT_FORMS as $isoCode => $definition) {
             if ($this->withdrawalFormExists($isoCode)) {
@@ -218,8 +238,12 @@ class LifeCycleService
 
     /**
      * Check whether a withdrawal form already exists for the given ISO code.
+     *
+     * @param string $isoCode
+     *
+     * @return bool
      */
-    private function withdrawalFormExists(string $isoCode): bool
+    private function withdrawalFormExists($isoCode)
     {
         $count = $this->modelManager->createQueryBuilder()
             ->select('COUNT(form.id)')
