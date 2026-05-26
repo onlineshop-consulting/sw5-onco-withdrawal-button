@@ -21,5 +21,5 @@ Die Konfiguration wird in diesem Video erklärt:
 https://onlineshop.consulting/videos/plugins/sw5/onco-withdrawal.mp4
 
 ## Kompatibilität
-
-Shopware 5.7.0+
+PHP 5.6+
+Shopware 5.4.0+
