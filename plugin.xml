@@ -5,7 +5,7 @@
     <label>Withdrawal button</label>
     <label lang="de">Widerrufsbutton</label>
 
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 
     <copyright>onlineshop.consulting</copyright>
     <author>onlineshop.consulting</author>
@@ -31,5 +31,9 @@
     <changelog version="1.2.0">
         <changes>Compatibility Shopware 5.4+, better theme compatibility</changes>
         <changes lang="de">Kompatibilität Shopware 5.4+, bessere Theme-Kompatibilität</changes>
+    </changelog>
+    <changelog version="1.2.1">
+        <changes>Add "blocked-link" class for account dropdown</changes>
+        <changes lang="de">Link im Konto Dropdown repariert</changes>
     </changelog>
 </plugin>
