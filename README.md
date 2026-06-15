@@ -20,6 +20,9 @@ Widerrufs-Button und Online-Widerrufsformular gemäß EU-Richtlinie 2023/2673.
 Die Konfiguration wird in diesem Video erklärt:
 https://onlineshop.consulting/videos/plugins/sw5/onco-withdrawal.mp4
 
+Bei Shopware 5.4 gibt es eine kleine Ausnahme bei der Konfiguration:
+https://onlineshop.consulting/videos/plugins/sw5/onco-withdrawal-sw54.mp4
+
 ## Kompatibilität
 PHP 5.6+
 Shopware 5.4.0+
