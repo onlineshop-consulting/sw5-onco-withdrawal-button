@@ -18,7 +18,7 @@
         Stellt ein Online-Widerrufsformular und Widerrufs-Buttons gemäß EU-Richtlinie 2023/2673 bereit.
     </description>
 
-    <compatibility minVersion="5.4.6"/>
+    <compatibility minVersion="5.4.0"/>
 
     <changelog version="1.0.0">
         <changes>Initial release</changes>
