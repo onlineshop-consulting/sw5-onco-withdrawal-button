@@ -26,3 +26,17 @@ https://onlineshop.consulting/videos/plugins/sw5/onco-withdrawal-sw54.mp4
 ## Kompatibilität
 PHP 5.6+
 Shopware 5.4.0+
+
+## Zeitangabe bei "Zeitpunkt des Widerrufs"
+
+In Shopware 5 sind Zeitangaben in Formular-Templates leider immer im 12h-Format. Das betrifft auch den "Zeitpunkt des Widerrufs" in diesem Plugin. Um die Zeit im 24h-Format anzuzeigen, kann diese einfache Änderung direkt in Shopware gemacht werden:
+
+In der Datei engine/Shopware/Controllers/Frontend/Forms.php suche:
+
+`date('d.m.Y h:i:s')`
+
+und ersetze mit:
+
+`date('d.m.Y H:i:s')`
+
+(also einfach das "h" in "H" ändern)
